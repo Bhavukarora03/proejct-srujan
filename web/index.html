@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Introducing our state-of-the-art AI-powered text editing platform that leverages the latest advancements in Natural Language Processing (NLP) to provide unparalleled accuracy and efficiency in editing and proofreading written content.  Our AI text editing platform is designed to help users improve the quality and clarity of their writing, providing real-time suggestions and corrections for grammar, punctuation, spelling, style, and syntax. With its advanced machine learning algorithms, our platform analyzes the context of the text and suggests the most appropriate corrections, ensuring that the final output is grammatically correct, easy to read, and meets the highest standards of quality.  Our platform is easy to use, providing a user-friendly interface that enables users to upload their text and receive instant feedback on their writing. The platform is customizable, allowing users to adjust the level of editing and proofreading to suit their specific needs.  The AI text editing platform is ideal for a wide range of applications, including academic writing, professional documents, and personal communication. Whether you are a student, researcher, business professional, or creative writer, our platform is the perfect tool to enhance the clarity, accuracy, and effectiveness of your writing.  With our AI text editing platform, you can save time and effort, avoid embarrassing errors and mistakes, and produce high-quality written content that effectively communicates your message to your audience. Try our platform today and experience the power of AI-driven text editing for yourself!">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="srujan">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>srujan</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
+<body>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
