@@ -14,7 +14,8 @@ class SignInPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: AppBar(toolbarHeight: 0, systemOverlayStyle: SystemUiOverlayStyle.dark),
+        appBar: AppBar(
+            toolbarHeight: 0, systemOverlayStyle: SystemUiOverlayStyle.dark),
         backgroundColor: Colors.white,
         body: ListView(
           children: [
@@ -43,7 +44,9 @@ class SignInPage extends ConsumerWidget {
                         'Don\'t have an account?',
                         style: TextStyle(fontSize: 16, color: Colors.black54),
                       ),
-                      Button(onPressed: () {}, variant: 'text', label: 'Sign Up'),
+                      Button(
+                          onPressed: () {}, variant: 'text', label: 'Sign Up'),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ],
