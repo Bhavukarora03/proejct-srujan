@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:srujan/components/button.dart';
-import 'package:srujan/services/repositery/auth/auth.dart';
+import 'package:srujan/services/auth/repositery/auth.dart';
 
 class SignInPage extends ConsumerWidget {
   const SignInPage({Key? key}) : super(key: key);
