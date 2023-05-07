@@ -1,14 +1,32 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:srujan/components/button.dart';
-import 'package:srujan/services/auth/repositery/auth.dart';
+import 'package:srujan/components/global_snack_bar.dart';
+import 'package:srujan/screens/home/home.dart';
+import 'package:srujan/services/auth/repositery/auth_repositery.dart';
 
 class SignInPage extends ConsumerWidget {
   const SignInPage({Key? key}) : super(key: key);
 
-  void signInWithGoogle(WidgetRef ref, BuildContext context) {
-    ref.read(authRepositoryProvider).signInWithGoogle(context);
+  void signInWithGoogle(WidgetRef ref, BuildContext context) async {
+    final navigator = Navigator.of(context);
+    final errorModel =
+        await ref.read(authRepositoryProvider).signInWithGoogle(context);
+
+    if (errorModel.error == null) {
+      ref.read(userProvider.notifier).update((state) => errorModel.data);
+      navigator
+          .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
+    } else {
+      print(errorModel.error!);
+      GlobalSnackBar.show(
+        context,
+        message: errorModel.error!,
+      );
+    }
   }
 
   @override
@@ -45,7 +63,11 @@ class SignInPage extends ConsumerWidget {
                         style: TextStyle(fontSize: 16, color: Colors.black54),
                       ),
                       Button(
-                          onPressed: () {}, variant: 'text', label: 'Sign Up'),
+                          onPressed: () {
+                            print('Sign Up');
+                          },
+                          variant: 'text',
+                          label: 'Sign Up'),
                       const SizedBox(height: 16),
                     ],
                   ),

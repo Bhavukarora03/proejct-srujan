@@ -18,5 +18,35 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserToJson(this);
+
+  copywith({
+    String? name,
+    String? email,
+    String? profilePicture,
+    String? token,
+    String? uid,
+  }) {
+    return User(
+      name: name ?? this.name,
+      email: email ?? this.email,
+      profilePicture: profilePicture ?? this.profilePicture,
+      token: token ?? this.token,
+      uid: uid ?? this.uid,
+    );
+  }
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class ErrorModel {
+  final String? error;
+  final dynamic data;
+
+  ErrorModel({this.error, this.data});
+
+  factory ErrorModel.fromJson(Map<String, dynamic> json) =>
+      _$ErrorModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ErrorModelToJson(this);
 }
