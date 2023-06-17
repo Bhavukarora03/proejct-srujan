@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,6 +47,7 @@ class SignInPage extends ConsumerWidget {
                     height: 500,
                     width: double.infinity,
                   ),
+                  const SizedBox(height: 16),
                   Button(
                       onPressed: () {
                         signInWithGoogle(ref, context);
