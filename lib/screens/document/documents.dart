@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:srujan/components/button.dart';
+import 'package:srujan/services/auth/models/error_model.dart' as models;
 import 'package:srujan/services/auth/repositery/auth_repositery.dart';
 import 'package:srujan/services/auth/repositery/document_repositery.dart';
 
@@ -17,6 +18,7 @@ class DocumentScreen extends ConsumerStatefulWidget {
 class _DocumentScreenState extends ConsumerState<DocumentScreen> {
   TextEditingController _titlecontroller = TextEditingController(text: 'Untitled');
   final quill.QuillController _controller = quill.QuillController.basic();
+  models.ErrorModel? error;
 
   void updateTitle(WidgetRef ref, String title) async {
     ref.read(documentRepositoryProvider).updateTitle(token: ref.read(userProvider)!.token, id: widget.id, title: title);
@@ -26,6 +28,23 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
   void dispose() {
     _titlecontroller.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    fetchDocumentData();
+    super.initState();
+  }
+
+  void fetchDocumentData() async {
+    error = await ref.read(documentRepositoryProvider).getDocumentById(token: ref.read(userProvider)!.token, id: widget.id);
+    if (error!.data != null) {
+      _titlecontroller.text = error!.data!.title!;
+      setState(() {});
+    } else {
+      // _titlecontroller.text = res.data!.title!;
+      // _controller.loadDocument(res.data!.data!);
+    }
   }
 
   @override

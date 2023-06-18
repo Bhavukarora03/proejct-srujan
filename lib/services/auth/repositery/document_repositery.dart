@@ -115,4 +115,37 @@ class DocumentRepository {
       }),
     );
   }
+
+  Future<models.ErrorModel> getDocumentById({required String token, required String id}) async {
+    final host = dotenv.env['BASE_URL'];
+    models.ErrorModel error = models.ErrorModel(
+      error: 'Some unexpected error occurred.',
+      data: null,
+    );
+    try {
+      var res = await _client.get(
+        Uri.parse('$host/v1/document/$id'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token,
+        },
+      );
+      switch (res.statusCode) {
+        case 200:
+          error = models.ErrorModel(
+            error: null,
+            data: models.DocumentModel.fromJson(res.body),
+          );
+          break;
+        default:
+          throw 'This Document does not exist, please create a new one.';
+      }
+    } catch (e) {
+      error = models.ErrorModel(
+        error: e.toString(),
+        data: null,
+      );
+    }
+    return error;
+  }
 }
