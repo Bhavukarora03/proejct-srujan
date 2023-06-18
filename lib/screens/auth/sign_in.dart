@@ -1,38 +1,36 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:srujan/components/button.dart';
-import 'package:srujan/components/global_snack_bar.dart';
-import 'package:srujan/screens/home/home.dart';
+import 'package:srujan/screens/auth/sign_up.dart';
 import 'package:srujan/services/auth/repositery/auth_repositery.dart';
 
 class SignInPage extends ConsumerWidget {
   const SignInPage({Key? key}) : super(key: key);
 
-  void signInWithGoogle(WidgetRef ref, BuildContext context) async {
-    final navigator = Navigator.of(context);
-    final errorModel =
-        await ref.read(authRepositoryProvider).signInWithGoogle(context);
+  signInWithGoogle(WidgetRef ref, BuildContext context) async {
+    final navigator = Routemaster.of(context);
+    var logger = Logger();
+    final errorModel = await ref.read(authRepositoryProvider).signInWithGoogle();
 
-    if (errorModel.error == null) {
-      ref.read(userProvider.notifier).update((state) => errorModel.data);
-      navigator
-          .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
-    } else {
-      print(errorModel.error!);
-      GlobalSnackBar.show(
-        context,
-        message: errorModel.error!,
-      );
+    try {
+      if (errorModel.error == null) {
+        ref.read(userProvider.notifier).update((state) => errorModel.data);
+        navigator.replace('/');
+      } else {
+        logger.e(errorModel.error);
+      }
+    } catch (e) {
+      logger.e(e);
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: AppBar(
-            toolbarHeight: 0, systemOverlayStyle: SystemUiOverlayStyle.dark),
+        appBar: AppBar(toolbarHeight: 0, systemOverlayStyle: SystemUiOverlayStyle.dark),
         backgroundColor: Colors.white,
         body: ListView(
           children: [
@@ -64,7 +62,7 @@ class SignInPage extends ConsumerWidget {
                       ),
                       Button(
                           onPressed: () {
-                            print('Sign Up');
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
                           },
                           variant: 'text',
                           label: 'Sign Up'),

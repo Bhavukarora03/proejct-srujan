@@ -1,52 +1,57 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'user_modal.g.dart';
+import 'dart:convert';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
 class User {
-  final String name;
   final String email;
-  final String profilePicture;
-  final String? token;
-  final String? uid;
+  final String name;
+  final String profilePic;
+  final String uid;
+  final String token;
 
   User({
-    required this.name,
     required this.email,
-    required this.profilePicture,
-    this.token,
-    this.uid,
+    required this.name,
+    required this.profilePic,
+    required this.uid,
+    required this.token,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'name': name,
+      'profilePic': profilePic,
+      'uid': uid,
+      'token': token,
+    };
+  }
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
-
-  copywith({
-    String? name,
-    String? email,
-    String? profilePicture,
-    String? token,
-    String? uid,
-  }) {
+  factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      name: name ?? this.name,
-      email: email ?? this.email,
-      profilePicture: profilePicture ?? this.profilePicture,
-      token: token ?? this.token,
-      uid: uid ?? this.uid,
+      email: map['email'] ?? '',
+      name: map['name'] ?? '',
+      profilePic: map['profilePic'] ?? '',
+      uid: map['_id'] ?? '',
+      token: map['token'] ?? '',
     );
   }
-}
 
-@JsonSerializable(fieldRename: FieldRename.snake)
-class ErrorModel {
-  final String? error;
-  final dynamic data;
+  String toJson() => json.encode(toMap());
 
-  ErrorModel({this.error, this.data});
+  factory User.fromJson(String source) => User.fromMap(json.decode(source));
 
-  factory ErrorModel.fromJson(Map<String, dynamic> json) =>
-      _$ErrorModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ErrorModelToJson(this);
+  User copyWith({
+    String? email,
+    String? name,
+    String? profilePic,
+    String? uid,
+    String? token,
+  }) {
+    return User(
+      email: email ?? this.email,
+      name: name ?? this.name,
+      profilePic: profilePic ?? this.profilePic,
+      uid: uid ?? this.uid,
+      token: token ?? this.token,
+    );
+  }
 }

@@ -21,10 +21,12 @@ dependencies:
   shared_preferences: ^2.1.0
   google_sign_in: ^6.1.0
   flutter_riverpod: ^2.3.6
-  json_annotation: ^4.8.1
   http: ^0.13.6
   flutter_dotenv: ^5.0.2
   get_it: ^7.4.1
+  logger: ^1.4.0
+  routemaster: ^1.0.1
+  flutter_quill: ^7.2.7
 
 
 
@@ -68,8 +70,8 @@ flutter:
 
 
   assets:
-   - assets/images/
-   - .env
+    - assets/images/
+    - .env
 
 
 
