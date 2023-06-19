@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
+import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
   final void Function() onPressed;
@@ -15,17 +14,17 @@ class Button extends StatelessWidget {
   final Icon? icon;
   final Color? buttonColor;
 
-  const Button({
-    Key? key,
-    this.padding,
-    this.loading = false,
-    this.disabled = false,
-    required this.onPressed,
-    required this.variant,
-    this.icon,
-    this.label,
-    this.buttonColor = Colors.lightBlueAccent
-  }) : super(key: key);
+  const Button(
+      {Key? key,
+      this.padding,
+      this.loading = false,
+      this.disabled = false,
+      required this.onPressed,
+      required this.variant,
+      this.icon,
+      this.label,
+      this.buttonColor = Colors.greenAccent})
+      : super(key: key);
 
   Widget _buildAndroidTextButton(BuildContext context) {
     final text = _buildLabel();
@@ -46,13 +45,11 @@ class Button extends StatelessWidget {
 
     // Button with only icon
     if (label == null && icon != null) {
-      return TextButton(
-          style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : icon!);
+      return TextButton(style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : icon!);
     }
 
     // Button with text
-    return TextButton(
-        style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : text);
+    return TextButton(style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : text);
   }
 
   Widget _buildIosTextButton(BuildContext context) {
@@ -96,6 +93,7 @@ class Button extends StatelessWidget {
     final style = ElevatedButton.styleFrom(
       elevation: 0,
       backgroundColor: buttonColor,
+      foregroundColor: Colors.white,
     );
 
     // Button with text and icon
@@ -110,13 +108,11 @@ class Button extends StatelessWidget {
 
     // Button with only icon
     if (label == null && icon != null) {
-      return ElevatedButton(
-          style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : icon!);
+      return ElevatedButton(style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : icon!);
     }
 
     // Button with text
-    return ElevatedButton(
-        style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : text);
+    return ElevatedButton(style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : text);
   }
 
   Widget _buildIosFilledButton(BuildContext context) {
@@ -185,13 +181,11 @@ class Button extends StatelessWidget {
 
     // Button with only icon
     if (label == null && icon != null) {
-      return OutlinedButton(
-          style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : icon!);
+      return OutlinedButton(style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : icon!);
     }
 
     // Button with text
-    return OutlinedButton(
-        style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : text);
+    return OutlinedButton(style: style, onPressed: (disabled || loading) ? null : onPressed, child: loading ? loader : text);
   }
 
   Widget _buildIosOutlinedButton(BuildContext context) {
@@ -236,12 +230,12 @@ class Button extends StatelessWidget {
     return SizedBox(
       height: 20,
       width: 20,
-      child:  kIsWeb
+      child: kIsWeb
           ? const CupertinoActivityIndicator()
           : CircularProgressIndicator(
-        strokeWidth: 2,
-        color: Theme.of(context).disabledColor,
-      ),
+              strokeWidth: 2,
+              color: Theme.of(context).disabledColor,
+            ),
     );
   }
 
@@ -261,7 +255,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (variant == 'text') {
-      if ( kIsWeb || Platform.isIOS || Platform.isMacOS) {
+      if (kIsWeb || Platform.isIOS || Platform.isMacOS) {
         return _buildIosTextButton(context);
       }
 
@@ -269,7 +263,7 @@ class Button extends StatelessWidget {
     }
 
     if (variant == 'outlined') {
-      if ( kIsWeb || Platform.isIOS || Platform.isMacOS) {
+      if (kIsWeb || Platform.isIOS || Platform.isMacOS) {
         return _buildIosOutlinedButton(context);
       }
 
@@ -277,7 +271,7 @@ class Button extends StatelessWidget {
     }
 
     if (variant == 'filled') {
-      if ( kIsWeb || Platform.isIOS || Platform.isMacOS) {
+      if (kIsWeb || Platform.isIOS || Platform.isMacOS) {
         return _buildIosFilledButton(context);
       }
       return _buildAndroidFilledButton(context);

@@ -10,69 +10,74 @@ import 'package:srujan/services/auth/repositery/auth_repositery.dart';
 class SignInPage extends ConsumerWidget {
   const SignInPage({Key? key}) : super(key: key);
 
-  signInWithGoogle(WidgetRef ref, BuildContext context) async {
-    final navigator = Routemaster.of(context);
+  void signInWithGoogle(WidgetRef ref, BuildContext context) async {
+    final sMessenger = ScaffoldMessenger.of(context);
     var logger = Logger();
+    final navigator = Routemaster.of(context);
     final errorModel = await ref.read(authRepositoryProvider).signInWithGoogle();
-
-    try {
-      if (errorModel.error == null) {
-        ref.read(userProvider.notifier).update((state) => errorModel.data);
-        navigator.replace('/');
-      } else {
-        logger.e(errorModel.error);
-      }
-    } catch (e) {
-      logger.e(e);
+    if (errorModel.error == null) {
+      ref.read(userProvider.notifier).update((state) => errorModel.data);
+      navigator.replace('/');
+    } else {
+      logger.e(errorModel.error);
+      sMessenger.showSnackBar(
+        SnackBar(
+          content: Text(errorModel.error!),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: AppBar(toolbarHeight: 0, systemOverlayStyle: SystemUiOverlayStyle.dark),
-        backgroundColor: Colors.white,
-        body: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset(
-                    'assets/images/app_logo.png',
-                    height: 500,
-                    width: double.infinity,
-                  ),
-                  const SizedBox(height: 16),
-                  Button(
-                      onPressed: () {
-                        signInWithGoogle(ref, context);
-                      },
-                      variant: 'filled',
-                      label: 'Sign In'),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Don\'t have an account?',
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
-                      ),
-                      Button(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
-                          },
-                          variant: 'text',
-                          label: 'Sign Up'),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ],
-              ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                Image.asset(
+                  'assets/images/app_logo.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+                ListView(
+                  children: [
+                    AppBar(toolbarHeight: 0, systemOverlayStyle: SystemUiOverlayStyle.dark),
+                    const SizedBox(height: kToolbarHeight), // Add spacing for the app bar
+                    const SizedBox(height: 16),
+                    // Add other content here
+                  ],
+                ),
+              ],
             ),
-          ],
-        ));
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Button(
+                  onPressed: () => signInWithGoogle(ref, context),
+                  variant: 'filled',
+                  label: 'Sign In',
+                ),
+                const SizedBox(height: 16),
+                Button(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
+                  },
+                  variant: 'filled',
+                  label: 'Sign Up',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

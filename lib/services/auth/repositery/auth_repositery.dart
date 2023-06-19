@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -38,7 +39,7 @@ class AuthRepository {
       data: null,
     );
     try {
-      final googleUser = await _googleSignIn.signIn();
+      final googleUser = kIsWeb ? await _googleSignIn.signInSilently() : await _googleSignIn.signIn();
       if (googleUser != null) {
         print(googleUser);
         final userData = models.User(
@@ -51,7 +52,9 @@ class AuthRepository {
         final res = await _client.post(
           Uri.parse('$baseUrl/v1/auth/signup'),
           body: userData.toJson(),
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json',
+          },
         );
         print(res.body);
         print(res.statusCode);
@@ -69,7 +72,6 @@ class AuthRepository {
         }
       }
     } catch (e) {
-      _logger.d(e.toString());
       error = models.ErrorModel(
         error: e.toString(),
         data: null,

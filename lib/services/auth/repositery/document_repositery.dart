@@ -3,27 +3,33 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:srujan/services/auth/models/document_model.dart' as models;
 import 'package:srujan/services/auth/models/error_model.dart' as models;
 
-final documentRepositoryProvider = Provider((ref) => DocumentRepository(
-      client: http.Client(),
-    ));
+final documentRepositoryProvider = Provider(
+  (ref) => DocumentRepository(
+    client: http.Client(),
+  ),
+);
 
 class DocumentRepository {
   final http.Client _client;
 
-  DocumentRepository({required http.Client client}) : _client = client;
+  DocumentRepository({
+    required http.Client client,
+  }) : _client = client;
 
   Future<models.ErrorModel> createDocument(String token) async {
-    final baseUrl = dotenv.env['BASE_URL'];
+    final host = dotenv.env['BASE_URL'];
+    var logger = Logger();
     models.ErrorModel error = models.ErrorModel(
       error: 'Some unexpected error occurred.',
       data: null,
     );
     try {
       var res = await _client.post(
-        Uri.parse('$baseUrl/v1/document/create'),
+        Uri.parse('$host/v1/document/create'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token,
@@ -32,13 +38,23 @@ class DocumentRepository {
           'createdAt': DateTime.now().millisecondsSinceEpoch,
         }),
       );
+      print(res.body);
       switch (res.statusCode) {
         case 200:
-          error = models.ErrorModel(
-            error: null,
-            data: models.DocumentModel.fromJson(res.body),
-          );
+          final responseBody = res.body;
+          if (responseBody != null && responseBody.isNotEmpty) {
+            error = models.ErrorModel(
+              error: null,
+              data: models.DocumentModel.fromJson(responseBody),
+            );
+          } else {
+            error = models.ErrorModel(
+              error: 'Invalid response body',
+              data: null,
+            );
+          }
           break;
+
         default:
           error = models.ErrorModel(
             error: res.body,
@@ -47,6 +63,7 @@ class DocumentRepository {
           break;
       }
     } catch (e) {
+      logger.e(e.toString());
       error = models.ErrorModel(
         error: e.toString(),
         data: null,
@@ -56,14 +73,14 @@ class DocumentRepository {
   }
 
   Future<models.ErrorModel> getDocuments(String token) async {
-    final baseUrl = dotenv.env['BASE_URL'];
+    final host = dotenv.env['BASE_URL'];
     models.ErrorModel error = models.ErrorModel(
       error: 'Some unexpected error occurred.',
       data: null,
     );
     try {
       var res = await _client.get(
-        Uri.parse('$baseUrl/v1/document/me'),
+        Uri.parse('$host/v1/document/me'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token,
@@ -72,7 +89,6 @@ class DocumentRepository {
       switch (res.statusCode) {
         case 200:
           List<models.DocumentModel> documents = [];
-
           for (int i = 0; i < jsonDecode(res.body).length; i++) {
             documents.add(models.DocumentModel.fromJson(jsonEncode(jsonDecode(res.body)[i])));
           }
@@ -116,7 +132,7 @@ class DocumentRepository {
     );
   }
 
-  Future<models.ErrorModel> getDocumentById({required String token, required String id}) async {
+  Future<models.ErrorModel> getDocumentById(String token, String id) async {
     final host = dotenv.env['BASE_URL'];
     models.ErrorModel error = models.ErrorModel(
       error: 'Some unexpected error occurred.',
@@ -147,5 +163,21 @@ class DocumentRepository {
       );
     }
     return error;
+  }
+
+  Future<void> deleteDocument(String token, String id) async {
+    final host = dotenv.env['BASE_URL'];
+
+    try {
+      await _client.delete(
+        Uri.parse('$host/v1/document/$id'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token,
+        },
+      );
+    } catch (e) {
+      throw e.toString();
+    }
   }
 }
