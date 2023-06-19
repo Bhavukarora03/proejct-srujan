@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:srujan/screens/document/documents.dart';
-import 'package:srujan/screens/gpt/gpt_home.dart';
+import 'package:srujan/screens/gpt/gpt.dart';
 import 'package:srujan/services/auth/models/document_model.dart';
 import 'package:srujan/services/auth/repositery/auth_repositery.dart';
 import 'package:srujan/services/auth/repositery/document_repositery.dart';
@@ -75,11 +75,18 @@ class HomeScreen extends ConsumerWidget {
                           ListTile(
                               leading: const Icon(Icons.camera_alt_rounded),
                               title: const Text('Try our new AI feature'),
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const GptHome()))),
+                              onTap: () {
+                                Navigator.pop(context);
+
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const GptHome()));
+                              }),
                           ListTile(
                             leading: const Icon(Icons.document_scanner_rounded),
                             title: const Text('Create a new document'),
-                            onTap: () => createDocument(context, ref),
+                            onTap: () {
+                              Navigator.pop(context);
+                              createDocument(context, ref);
+                            },
                           ),
                           ListTile(leading: const Icon(Icons.logout), title: const Text('Sign Out'), onTap: () => signOut(ref)),
                         ],

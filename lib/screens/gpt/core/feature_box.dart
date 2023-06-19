@@ -18,6 +18,7 @@ class FeatureBox extends StatelessWidget {
         vertical: 10,
       ),
       decoration: BoxDecoration(
+        color: Colors.greenAccent.shade100,
         borderRadius: const BorderRadius.all(
           Radius.circular(15),
         ),

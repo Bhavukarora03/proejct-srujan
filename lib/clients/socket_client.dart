@@ -1,9 +1,10 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class SocketClient {
   io.Socket? socket;
   static SocketClient? _instance;
-  static const String host = 'https://localhost:3001'; // TODO: Change this to production url
+  static String? host = dotenv.env['BASE_URL'];
 
   SocketClient._internal() {
     socket = io.io(host, <String, dynamic>{

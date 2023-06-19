@@ -9,6 +9,13 @@ class MyAppTheme {
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
     ),
+    inputDecorationTheme: const InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.black),
+      hintStyle: TextStyle(color: Colors.black),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black),
+      ),
+    ),
     scaffoldBackgroundColor: Colors.green.shade100,
     textTheme: const TextTheme(
       bodyLarge: TextStyle(color: Colors.black),
@@ -29,6 +36,13 @@ class MyAppTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.black),
+      hintStyle: TextStyle(color: Colors.black),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black),
+      ),
     ),
     scaffoldBackgroundColor: Colors.green.shade100,
     primaryColor: Colors.black,

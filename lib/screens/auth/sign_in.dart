@@ -68,7 +68,7 @@ class SignInPage extends ConsumerWidget {
                 const SizedBox(height: 16),
                 Button(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpPage()));
                   },
                   variant: 'filled',
                   label: 'Sign Up',

@@ -95,15 +95,16 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_controller == null) {
-      return const Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
-      );
-    }
+    // if (_controller == null) {
+    //   return const Scaffold(
+    //     backgroundColor: Colors.white,
+    //     body: Center(
+    //       child: CircularProgressIndicator.adaptive(),
+    //     ),
+    //   );
+    // }
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -115,12 +116,17 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
                 onTap: () {
                   Routemaster.of(context).replace('/');
                 },
-                child: const Icon(Icons.file_copy),
+                child: const Icon(
+                  Icons.file_copy,
+                  color: Colors.black87,
+                  size: 20,
+                ),
               ),
               const SizedBox(width: 8),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 child: TextField(
+                  style: const TextStyle(fontSize: 16, color: Colors.black87),
                   controller: titleController,
                   onSubmitted: (value) => updateTitle(ref, value),
                   decoration: const InputDecoration(
@@ -147,7 +153,7 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
                             children: [
                               ListTile(
                                 onTap: () {
-                                  Clipboard.setData(ClipboardData(text: 'https://srujan.vercel.app/document/${widget.id}' ?? '')).then(
+                                  Clipboard.setData(ClipboardData(text: 'https://localhost:3001/document/${widget.id}' ?? '')).then(
                                       (value) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied to clipboard'))));
                                 },
                                 leading: const Icon(Icons.copy),
@@ -157,7 +163,10 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
                           ),
                         ));
               },
-              icon: const Icon(Icons.menu),
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.black87,
+              ),
             ),
           ),
         ],
@@ -166,16 +175,21 @@ class _DocumentScreenState extends ConsumerState<DocumentScreen> {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            quill.QuillToolbar.basic(controller: _controller!),
+            quill.QuillToolbar.basic(controller: _controller ?? quill.QuillController.basic()),
+            const SizedBox(height: 30),
             Expanded(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: Card(
-                  elevation: 5,
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: quill.QuillEditor.basic(
-                      controller: _controller!,
+                      controller: _controller ?? quill.QuillController.basic(),
                       readOnly: false, // true for view only mode
                     ),
                   ),

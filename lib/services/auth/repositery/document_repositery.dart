@@ -38,7 +38,6 @@ class DocumentRepository {
           'createdAt': DateTime.now().millisecondsSinceEpoch,
         }),
       );
-      print(res.body);
       switch (res.statusCode) {
         case 200:
           final responseBody = res.body;
