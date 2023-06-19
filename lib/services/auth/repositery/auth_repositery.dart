@@ -49,11 +49,12 @@ class AuthRepository {
           uid: "",
         );
         final res = await _client.post(
-          Uri.parse('http://192.168.1.1:3001/v1/auth/signup'),
+          Uri.parse('$baseUrl/v1/auth/signup'),
           body: userData.toJson(),
-          headers: {'Content-Type': 'application/json; charset=UTF-8'},
+          headers: {'Content-Type': 'application/json'},
         );
         print(res.body);
+        print(res.statusCode);
 
         switch (res.statusCode) {
           case 200:
@@ -65,13 +66,6 @@ class AuthRepository {
             error = models.ErrorModel(error: null, data: newUser);
             _localStorageRepository.setToken(newUser.token);
             break;
-          case 400:
-            print('User Already Exists');
-            _logger.d('User Already Exists');
-            break;
-          default:
-            print('Unexpected Error');
-            _logger.d('Unexpected Error');
         }
       }
     } catch (e) {

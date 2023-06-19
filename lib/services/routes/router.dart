@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:srujan/screens/auth/sign_up.dart';
+import 'package:srujan/screens/auth/sign_in.dart';
 import 'package:srujan/screens/document/documents.dart';
 import 'package:srujan/screens/home/home.dart';
 
 final loggedOutRoute = RouteMap(routes: {
-  '/': (route) => const MaterialPage(child: SignUpScreen()),
+  '/': (route) => const MaterialPage(child: SignInPage()),
 });
 
 final loggedInRoute = RouteMap(routes: {

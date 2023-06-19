@@ -33,7 +33,9 @@
 
     <title>srujan</title>
     <link href="manifest.json" rel="manifest">
+    <script async defer src="https://apis.google.com/js/api:client.js"></script>
 
+    <script async defer src="https://accounts.google.com/gsi/client"></script>
     <script>
         // The value below is injected by flutter build, do not touch.
         var serviceWorkerVersion = null;
@@ -45,6 +47,11 @@
 </head>
 <body>
 <script>
+    window.gapi.load('auth2', () => {
+        const auth2 = window.gapi.auth2.init({client_id})
+        auth2.signIn().then(console.log)
+    })
+
     window.addEventListener('load', function (ev) {
         // Download main.dart.js
         _flutter.loader.loadEntrypoint({
